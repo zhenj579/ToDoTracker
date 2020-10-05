@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ToDo</string>
+    <!--assign task screen string resources-->
+    <string name="assign_task_title_name">Tasks</string>
+    <string name="task_hint">Task</string>
+    <string name="set_button_name">Assign task names</string>
+    <!--assign timers screen string resources-->
+    <string name="title_activity_set_timer_screen">Set Timers</string>
+    <string name="assign_timers_title_name">Timers</string>
+    <string name="timers_hint">Time in seconds</string>
+    <string name="start_button_name">Start</string>
+
+</resources>
