@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,40 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 public class setTimerScreen extends AppCompatActivity {
 
     Button startButton;
-
-    private CountDownTimer createTimer(final long millisInFuture, final TextView display, final String taskName)
-    {
-        return new CountDownTimer(millisInFuture, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                display.setText("seconds left: " + millisUntilFinished/1000);
-            }
-
-            @Override
-            public void onFinish() {
-                display.setText("The task: " + taskName + " has been completed, starting next task in a few seconds...");
-                new CountDownTimer(3000,1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        Context context = getApplicationContext();
-                        CharSequence text = "starting next task in: " + millisUntilFinished/1000;
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast.makeText(context, text, duration).show();
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-                }.start();
-            }
-        };
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,25 +34,39 @@ public class setTimerScreen extends AppCompatActivity {
         final EditText timer5EditText = (EditText) findViewById(R.id.timer5EditText);
 
 
-
-
-
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int timer1Duration = Integer.parseInt(timer1EditText.toString());
-                final int timer2Duration = Integer.parseInt(timer2EditText.toString());
-                final int timer3Duration = Integer.parseInt(timer3EditText.toString());
-                final int timer4Duration = Integer.parseInt(timer4EditText.toString());
-                final int timer5Duration = Integer.parseInt(timer5EditText.toString());
-                HashMap<String, CountDownTimer> tasks = new HashMap<>();
+                final int timer1Duration = Integer.parseInt(timer1EditText.getText().toString());
+                final int timer2Duration = Integer.parseInt(timer2EditText.getText().toString());
+                final int timer3Duration = Integer.parseInt(timer3EditText.getText().toString());
+                final int timer4Duration = Integer.parseInt(timer4EditText.getText().toString());
+                final int timer5Duration = Integer.parseInt(timer5EditText.getText().toString());
                 Bundle extras = getIntent().getExtras();
-                if(extras != null)
-                {
-                    String task1Name = extras.getString("task1Name");
-//                    tasks.put(task1Name, createTimer(timer1Duration, )
-                }
+
+
+                String task1Name = extras.getString("task1Name");
+                String task2Name = extras.getString("task2Name");
+                String task3Name = extras.getString("task3Name");
+                String task4Name = extras.getString("task4Name");
+                String task5Name = extras.getString("task5Name");
+
+                Intent intent = new Intent(setTimerScreen.this, ongoingScreen.class);
+                intent.putExtra("timer1Duration", timer1Duration);
+                intent.putExtra("timer2Duration", timer2Duration);
+                intent.putExtra("timer3Duration", timer3Duration);
+                intent.putExtra("timer4Duration", timer4Duration);
+                intent.putExtra("timer5Duration", timer5Duration);
+
+                intent.putExtra("task1Name",task1Name);
+                intent.putExtra("task2Name",task2Name);
+                intent.putExtra("task3Name",task3Name);
+                intent.putExtra("task4Name",task4Name);
+                intent.putExtra("task5Name",task5Name);
+
+                startActivity(intent);
             }
         });
+
     }
 }
