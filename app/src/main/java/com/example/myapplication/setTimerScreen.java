@@ -20,23 +20,35 @@ import java.util.HashMap;
 public class setTimerScreen extends AppCompatActivity {
 
     Button startButton;
+    Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_timer_screen);
         startButton = (Button) findViewById(R.id.startButton);
+        backButton = (Button) findViewById(R.id.backButton);
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(setTimerScreen.this, setTaskScreen.class);
+                startActivity(intent);
+
+            }
+        });
+        //grab all timer edittexts
         final EditText timer1EditText = (EditText) findViewById(R.id.timer1EditText);
         final EditText timer2EditText = (EditText) findViewById(R.id.timer2EditText);
         final EditText timer3EditText = (EditText) findViewById(R.id.timer3EditText);
         final EditText timer4EditText = (EditText) findViewById(R.id.timer4EditText);
         final EditText timer5EditText = (EditText) findViewById(R.id.timer5EditText);
 
-
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //get the numbers from the edittexts and convert to integer
                 final int timer1Duration = Integer.parseInt(timer1EditText.getText().toString());
                 final int timer2Duration = Integer.parseInt(timer2EditText.getText().toString());
                 final int timer3Duration = Integer.parseInt(timer3EditText.getText().toString());
