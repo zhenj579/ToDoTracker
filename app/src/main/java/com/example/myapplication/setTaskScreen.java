@@ -25,12 +25,14 @@ public class setTaskScreen extends Activity {
                 EditText task3EditText = (EditText) findViewById(R.id.task3EditText);
                 EditText task4EditText = (EditText) findViewById(R.id.task4EditText);
                 EditText task5EditText = (EditText) findViewById(R.id.task5EditText);
+
                 //extract their text content and convert to a string
-                String task1Name = task1EditText.toString();
-                String task2Name = task2EditText.toString();
-                String task3Name = task3EditText.toString();
-                String task4Name = task4EditText.toString();
-                String task5Name = task5EditText.toString();
+                String task1Name = task1EditText.getText().toString();
+                String task2Name = task2EditText.getText().toString();
+                String task3Name = task3EditText.getText().toString();
+                String task4Name = task4EditText.getText().toString();
+                String task5Name = task5EditText.getText().toString();
+
                 //pass this information to the next activity(setTimerScreen)
                 Intent intent = new Intent(setTaskScreen.this, setTimerScreen.class);
                 intent.putExtra("task1Name", task1Name);

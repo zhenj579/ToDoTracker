@@ -39,6 +39,7 @@ public class ongoingScreen extends Activity {
             @Override
             public void onTick(long millisUntilFinished) {
                 display.setText(taskName);
+                //edit the timerDisplay to reflect on how many seconds left
                 timerDisplay.setText("seconds left: " + millisUntilFinished/1000);
             }
 
@@ -46,9 +47,9 @@ public class ongoingScreen extends Activity {
             public void onFinish() {
                 Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), alarmSound);
-                mediaPlayer.start();
-                if(next != null) next.start();
-                else timerDisplay.setText("no more tasks left");
+                mediaPlayer.start(); // play android notif sound when timer finishes
+                if(next != null) next.start(); // start the next queued timer
+                else timerDisplay.setText("no more tasks left"); // when there are no more tasks, change edit text to show that there are no more tasks left
             }
         };
     }
@@ -63,24 +64,28 @@ public class ongoingScreen extends Activity {
 
         Bundle bundle = getIntent().getExtras();
 
+        //get all the timer duration extras and convert from milliseconds to seconds
         timer1Duration = bundle.getInt("timer1Duration")*1000;
         timer2Duration = bundle.getInt("timer2Duration")*1000;
         timer3Duration = bundle.getInt("timer3Duration")*1000;
         timer4Duration = bundle.getInt("timer4Duration")*1000;
         timer5Duration = bundle.getInt("timer5Duration")*1000;
 
+        //get all string task names
         task1Name = bundle.getString("task1Name");
         task2Name = bundle.getString("task2Name");
         task3Name = bundle.getString("task3Name");
         task4Name = bundle.getString("task4Name");
         task5Name = bundle.getString("task5Name");
 
+        //create the timers and queue each task one after the other
         timer5 = createTimer(timer5Duration, task5Name, null);
         timer4 = createTimer(timer4Duration, task4Name, timer5);
         timer3 = createTimer(timer3Duration, task3Name, timer4);
         timer2 = createTimer(timer2Duration, task2Name, timer3);
         timer1 = createTimer(timer1Duration, task1Name, timer2);
 
+        //start the first timer
         timer1.start();
 
     }
