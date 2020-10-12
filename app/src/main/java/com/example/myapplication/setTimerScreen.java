@@ -7,9 +7,13 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.CountDownTimer;
+import android.text.InputType;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,24 @@ public class setTimerScreen extends AppCompatActivity {
 
     Button startButton;
     Button backButton;
+    int timerIDs;
+    final int TIMER_OFFSET = 9; // start indexing timers from 1
+
+    private void addTimer()
+    {
+        LinearLayout ll = (LinearLayout)findViewById(R.id.timerLayout);
+        EditText et = new EditText(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.CENTER;
+        lp.width = 300;
+        et.setLayoutParams(lp);
+        et.setHint("Task " + (timerIDs - TIMER_OFFSET));
+        et.setGravity(Gravity.CENTER);
+        et.setInputType(InputType.TYPE_CLASS_NUMBER);
+        et.setId(timerIDs);
+        ll.addView(et);
+        timerIDs++;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,54 +50,37 @@ public class setTimerScreen extends AppCompatActivity {
         setContentView(R.layout.activity_set_timer_screen);
         startButton = (Button) findViewById(R.id.startButton);
         backButton = (Button) findViewById(R.id.backButton);
-
+        final int MAX_NUM_OF_TIMERS = getIntent().getIntExtra("numOfTasks", 0);
+        timerIDs = 10; //arbitrary number that is not in the range of the taskIDs to make sure no edittext shares the same id
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(setTimerScreen.this, setTaskScreen.class);
-                startActivity(intent);
-
+                startActivity(intent); // go back to previous screen
             }
         });
-        //grab all timer edittexts
-        final EditText timer1EditText = (EditText) findViewById(R.id.timer1EditText);
-        final EditText timer2EditText = (EditText) findViewById(R.id.timer2EditText);
-        final EditText timer3EditText = (EditText) findViewById(R.id.timer3EditText);
-        final EditText timer4EditText = (EditText) findViewById(R.id.timer4EditText);
-        final EditText timer5EditText = (EditText) findViewById(R.id.timer5EditText);
-
+        for(int i = 0; i < MAX_NUM_OF_TIMERS; i++)
+        {
+            addTimer(); // create the number of timers that corresponds to the number of tasks
+        }
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get the numbers from the edittexts and convert to integer
-                final int timer1Duration = Integer.parseInt(timer1EditText.getText().toString());
-                final int timer2Duration = Integer.parseInt(timer2EditText.getText().toString());
-                final int timer3Duration = Integer.parseInt(timer3EditText.getText().toString());
-                final int timer4Duration = Integer.parseInt(timer4EditText.getText().toString());
-                final int timer5Duration = Integer.parseInt(timer5EditText.getText().toString());
                 Bundle extras = getIntent().getExtras();
 
-
-                String task1Name = extras.getString("task1Name");
-                String task2Name = extras.getString("task2Name");
-                String task3Name = extras.getString("task3Name");
-                String task4Name = extras.getString("task4Name");
-                String task5Name = extras.getString("task5Name");
-
+                final int NUM_OF_TASKS = extras.getInt("numOfTasks", 0);
                 Intent intent = new Intent(setTimerScreen.this, ongoingScreen.class);
-                intent.putExtra("timer1Duration", timer1Duration);
-                intent.putExtra("timer2Duration", timer2Duration);
-                intent.putExtra("timer3Duration", timer3Duration);
-                intent.putExtra("timer4Duration", timer4Duration);
-                intent.putExtra("timer5Duration", timer5Duration);
-
-                intent.putExtra("task1Name",task1Name);
-                intent.putExtra("task2Name",task2Name);
-                intent.putExtra("task3Name",task3Name);
-                intent.putExtra("task4Name",task4Name);
-                intent.putExtra("task5Name",task5Name);
-
+                intent.putExtra("numOfTasks", NUM_OF_TASKS);
+                for(int i = 0; i < NUM_OF_TASKS; i++)
+                {
+                    String taskName = extras.getString("Task " + (i+1) + " name");
+                    intent.putExtra("Task " + (i+1) + " name", taskName); // pass on the task names from the setTaskScreen to the ongoingScreen
+                    // this taskName will be displayed on the ongoingScreen.
+                    EditText et = (EditText) findViewById(timerIDs-i-1); // get all timer edittext fields
+                    String content = et.getText().toString();
+                    int duration = Integer.parseInt(content) * 1000; // convert the edittext content from string seconds to int milliseconds
+                    intent.putExtra("Task " + i + " timer length", duration); // pass on the duration of the timer to ongoingScreen
+                }
                 startActivity(intent);
             }
         });
