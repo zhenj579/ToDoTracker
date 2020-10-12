@@ -67,11 +67,11 @@ public class setTaskScreen extends Activity {
                 intent.putExtra("numOfTasks", taskIDS);
 
                 //retrieving all edittexts with tasks and putting their names as an extra for the next activity
-                for(int i = 0; i < taskIDS; i++)
+                for(int i = 1; i <= taskIDS; i++)
                 {
-                    EditText et = (EditText) findViewById(i);
+                    EditText et = (EditText) findViewById(i-1);
                     String content = et.getText().toString();
-                    intent.putExtra("Task " + (i+1) + " name", content); // i+1 to make sure task number starts from 1
+                    intent.putExtra("Task " + i + " name", content);
                 }
                 startActivity(intent);
 

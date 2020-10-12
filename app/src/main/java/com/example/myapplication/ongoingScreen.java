@@ -48,16 +48,20 @@ public class ongoingScreen extends Activity {
 
         final int NUM_OF_TASKS = bundle.getInt("numOfTasks", 0);
 
-        CountDownTimer previous = null;
+        CountDownTimer next = null;
 
-        for(int i = NUM_OF_TASKS; i >= 0; i--) // create timers starting from last task moving backwards to the first task
+        for(int i = NUM_OF_TASKS; i >= 1; i--) // create timers starting from last task moving backwards to the first task
         {
             int millis = bundle.getInt("Task " + i + " timer length", 0); // retrieve all information from previous activites
-            String taskName = bundle.getString("Task " + (i+1) + " name");
-            previous = createTimer(millis, taskName, previous); // timers will be created in a queue-like system.
+            String taskName = bundle.getString("Task " + i + " name");
+            System.out.println("debug: -------------------------------------");
+            System.out.println("i: " + i + " millis: " + millis + " taskName: " + taskName);
+            System.out.println("debug: -------------------------------------");
+
+            next = createTimer(millis, taskName, next); // timers will be created in a queue-like system.
         }
         // -> = invokes
         // task 1 timer -> task 2 timer -> task 3 timer -> ...
-        previous.start(); // start the first task's timer
+        next.start(); // start the first task's timer
     }
 }
