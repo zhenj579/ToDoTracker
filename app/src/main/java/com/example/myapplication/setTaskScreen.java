@@ -15,6 +15,9 @@ public class setTaskScreen extends Activity {
 
     Button setButton;
     Button addTaskButton;
+    Button removeTaskButton;
+    LinearLayout ll;
+
     int taskIDS;
     final int MAX_TASKS = 10;
 
@@ -24,7 +27,6 @@ public class setTaskScreen extends Activity {
     }
     private void addTaskEditText()
     {
-        LinearLayout ll = (LinearLayout)findViewById(R.id.taskLayout);
         EditText et = new EditText(this);
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         et.setLayoutParams(p);
@@ -34,6 +36,20 @@ public class setTaskScreen extends Activity {
         ll.addView(et);
     }
 
+    private void removeTaskEditText()
+    {
+        EditText et = (EditText) findViewById(taskIDS-1);
+        ll.removeView(et);
+        taskIDS--;
+    }
+
+    private Toast generateToast(CharSequence msg)
+    {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        return Toast.makeText(context, msg, duration);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +57,21 @@ public class setTaskScreen extends Activity {
         taskIDS = 0;
         setButton = (Button) findViewById(R.id.setButton);
         addTaskButton = (Button) findViewById(R.id.addTaskButton);
+        removeTaskButton = (Button) findViewById(R.id.removeEditTextButton);
+        ll = (LinearLayout) findViewById(R.id.taskLayout);
+        removeTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(taskIDS > 0)
+                {
+                    removeTaskEditText();
+                }
+                else
+                {
+                    generateToast("No tasks to remove").show();
+                }
+            }
+        });
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,11 +81,7 @@ public class setTaskScreen extends Activity {
                 }
                 else
                 {
-                    Context context = getApplicationContext(); // alert user that no more edittext can fit the screen.
-                    CharSequence text = "Cannot make anymore tasks";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    generateToast("Exceeded task limit").show();
                 }
             }
         });
