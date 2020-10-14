@@ -6,6 +6,7 @@
     <string name="assign_task_title_name">Tasks</string>
     <string name="task_hint">Task</string>
     <string name="set_button_name">Assign task names</string>
+    <string name="remove_edittext_button_name">Remove Task</string>
     <!--assign timers screen string resources-->
     <string name="timer_instructions_hint">Enter the number of seconds for each task</string>
     <string name="title_activity_set_timer_screen">Set Timers</string>
