@@ -54,10 +54,6 @@ public class ongoingScreen extends Activity {
         {
             int millis = bundle.getInt("Task " + i + " timer length", 0); // retrieve all information from previous activites
             String taskName = bundle.getString("Task " + i + " name");
-            System.out.println("debug: -------------------------------------");
-            System.out.println("i: " + i + " millis: " + millis + " taskName: " + taskName);
-            System.out.println("debug: -------------------------------------");
-
             next = createTimer(millis, taskName, next); // timers will be created in a queue-like system.
         }
         // -> = invokes
