@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ToDo</string>
     <!--assign task screen string resources-->
+    <string name="remove_all_edittext_button_name">Remove All Tasks</string>
     <string name="tasks_instructions_hint">Type in the name of the tasks</string>
     <string name="add_task_button_name">Add Task</string>
     <string name="assign_task_title_name">Tasks</string>
