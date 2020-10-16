@@ -16,15 +16,22 @@ public class setTaskScreen extends Activity {
     Button setButton;
     Button addTaskButton;
     Button removeTaskButton;
+    Button removeAllButton;
     LinearLayout ll;
 
     int taskIDS;
     final int MAX_TASKS = 10;
 
-    public final int gettaskIDCount()
+    protected boolean tasksExists()
     {
-        return taskIDS;
+        return taskIDS > 0;
     }
+
+    private void removeAllTaskEditText()
+    {
+        ll.removeAllViews();
+    }
+
     private void addTaskEditText()
     {
         EditText et = new EditText(this);
@@ -58,7 +65,23 @@ public class setTaskScreen extends Activity {
         setButton = (Button) findViewById(R.id.setButton);
         addTaskButton = (Button) findViewById(R.id.addTaskButton);
         removeTaskButton = (Button) findViewById(R.id.removeEditTextButton);
+        removeAllButton = (Button) findViewById(R.id.clearButton);
         ll = (LinearLayout) findViewById(R.id.taskLayout);
+
+        removeAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tasksExists())
+                {
+                    removeAllTaskEditText();
+                    generateToast("Cleared").show();
+                }
+                else
+                {
+                    generateToast("No tasks to clear").show();
+                }
+            }
+        });
         removeTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
